@@ -1,0 +1,445 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="EndSequence" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ss="clr-namespace:System.Security;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_MissingRecords" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_StatusFileName" Type="InArgument(x:String)" />
+    <x:Property Name="in_Dtstatus" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
+    <x:Property Name="in_passwords" Type="InArgument(scg:Dictionary(x:String, ss:SecureString))" />
+    <x:Property Name="in_defaultKillList" Type="InArgument(s:String[])" />
+    <x:Property Name="in_Year" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>1330,4734</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>EndSequence_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="52">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>System.Security</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>System.Net</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="40">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="EndSequence" sap:VirtualizedContainerService.HintSize="1340,4669" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:Boolean" Name="MasterPathExisted" />
+      <Variable x:TypeArguments="x:String" Name="MasterFileUpload" />
+      <Variable x:TypeArguments="x:Boolean" Name="isStatusFileExists" />
+      <Variable x:TypeArguments="x:String" Name="OkCount" />
+      <Variable x:TypeArguments="x:String" Name="SkipCount" />
+      <Variable x:TypeArguments="s:String[]" Name="itemList" />
+      <Variable x:TypeArguments="x:Boolean" Name="isStatusPathExist" />
+      <Variable x:TypeArguments="x:Int32" Name="totalCount" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="1298,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;End Process started&quot;]" />
+    <ui:PathExists DisplayName="Path Exists" Exists="[isStatusPathExist]" sap:VirtualizedContainerService.HintSize="1298,89" sap2010:WorkflowViewState.IdRef="PathExists_3" Path="[Environment.CurrentDirectory+&quot;\Data\StatusFile\&quot;+in_StatusFileName]" PathType="File" />
+    <If Condition="[isStatusPathExist]" sap:VirtualizedContainerService.HintSize="1298,486" sap2010:WorkflowViewState.IdRef="If_5">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <If.Then>
+        <Sequence sap:VirtualizedContainerService.HintSize="376,338" sap2010:WorkflowViewState.IdRef="Sequence_8">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Info" Message="[&quot;Status File already exists&quot;]" />
+          <ui:AppendRange DataTable="[in_Dtstatus]" DisplayName="Append Range" sap:VirtualizedContainerService.HintSize="334,115" sap2010:WorkflowViewState.IdRef="AppendRange_2" SheetName="Sheet1" WorkbookPath="[Environment.CurrentDirectory+&quot;\Data\StatusFile\&quot;+in_StatusFileName]" />
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <Sequence sap:VirtualizedContainerService.HintSize="376,338" sap2010:WorkflowViewState.IdRef="Sequence_9">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Info" Message="[&quot;Creating new status file&quot;]" />
+          <ui:WriteRange AddHeaders="True" DataTable="[in_Dtstatus]" DisplayName="Write_StatusFile" sap:VirtualizedContainerService.HintSize="334,115" sap2010:WorkflowViewState.IdRef="WriteRange_2" SheetName="Sheet1" StartingCell="A1" WorkbookPath="[Environment.CurrentDirectory+&quot;\Data\StatusFile\&quot;+in_StatusFileName]" />
+        </Sequence>
+      </If.Else>
+    </If>
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="1298,3664" sap2010:WorkflowViewState.IdRef="TryCatch_2">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <TryCatch.Try>
+        <If Condition="[in_Dtstatus.Rows.Count&gt;0]" sap:VirtualizedContainerService.HintSize="1260,3437" sap2010:WorkflowViewState.IdRef="If_3">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <If.Then>
+            <Sequence DisplayName="GeneratingMasterFile&amp;UploadingtoBox" sap:VirtualizedContainerService.HintSize="839,3289" sap2010:WorkflowViewState.IdRef="Sequence_6">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="sd:DataTable" Name="FileNameDT" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Sequence DisplayName="MoveFolder_SendMail" sap:VirtualizedContainerService.HintSize="797,1297" sap2010:WorkflowViewState.IdRef="Sequence_2">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ui:ReadRange AddHeaders="True" DataTable="[FileNameDT]" DisplayName="Read_StatusFile" sap:VirtualizedContainerService.HintSize="755,87" sap2010:WorkflowViewState.IdRef="ReadRange_1" SheetName="Sheet1" WorkbookPath="[Environment.CurrentDirectory+&quot;\Data\StatusFile\&quot;+in_StatusFileName]">
+                  <ui:ReadRange.Range>
+                    <InArgument x:TypeArguments="x:String">
+                      <Literal x:TypeArguments="x:String" Value="" />
+                    </InArgument>
+                  </ui:ReadRange.Range>
+                </ui:ReadRange>
+                <ui:SortDataTable ColumnIndex="{x:Null}" DataColumn="{x:Null}" ColumnName="Number" DataTable="[FileNameDT]" DisplayName="Sort Data Table" sap:VirtualizedContainerService.HintSize="755,22" sap2010:WorkflowViewState.IdRef="SortDataTable_1" Order="Ascending" OutputDataTable="[FileNameDT]" />
+                <Assign DisplayName="Assign_OkCount" sap:VirtualizedContainerService.HintSize="755,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[OkCount]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">[FileNameDT.Select("Printed='Yes'").Count.ToString]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign DisplayName="Assign_SkipCount" sap:VirtualizedContainerService.HintSize="755,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[SkipCount]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">[FileNameDT.Select("Printed='No'").Count.ToString]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign DisplayName="Assign_itemList" sap:VirtualizedContainerService.HintSize="755,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="s:String[]">[itemList]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="s:String[]">[Directory.GetFiles(Environment.CurrentDirectory+"\Data\Output\DownloadedInvoices_"+DateTime.Now.ToString("dd-MM-yyyy"))]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <If Condition="[itemList.Count&gt;0]" sap:VirtualizedContainerService.HintSize="755,716" sap2010:WorkflowViewState.IdRef="If_9">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <If.Then>
+                    <Sequence DisplayName="UploadingInvoices" sap:VirtualizedContainerService.HintSize="376,568" sap2010:WorkflowViewState.IdRef="Sequence_14">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_13" Level="Info" Message="[&quot;Invoices uploading to sharepoint started&quot;]" />
+                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke SharePoint Invoice Upload workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_17" UnSafe="False" WorkflowFileName="SharepointCode\SharePointUpload.xaml">
+                        <ui:InvokeWorkflowFile.Arguments>
+                          <InArgument x:TypeArguments="x:String" x:Key="FolderUrl">[in_config("SharepointInvoiceURL").ToString]</InArgument>
+                          <InOutArgument x:TypeArguments="ui:Browser" x:Key="Browser" />
+                          <InArgument x:TypeArguments="s:String[]" x:Key="FileList">[itemList]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="CredentialAssetName" />
+                          <InArgument x:TypeArguments="ui:BrowserName" x:Key="BrowserToUse">[BrowserName.Chrome]</InArgument>
+                          <InArgument x:TypeArguments="x:Int32" x:Key="UploadTimeout">15000</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="LoginUsername">[in_config("SharePointCredential").ToString]</InArgument>
+                          <InArgument x:TypeArguments="ss:SecureString" x:Key="LoginPassword">[in_passwords("SharePointCredential")]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="LoginMailId">[in_config("SharePointCredential").ToString]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="GESSO">[in_config("BoxCredential").ToString]</InArgument>
+                          <InArgument x:TypeArguments="ss:SecureString" x:Key="GEPassword">[in_passwords("BoxCredential")]</InArgument>
+                        </ui:InvokeWorkflowFile.Arguments>
+                      </ui:InvokeWorkflowFile>
+                      <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Invoices uploaded to sharepoint successfully&quot;]" />
+                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke KillAllProcesses workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_19" UnSafe="False" WorkflowFileName="Framework\KillAllProcesses.xaml">
+                        <ui:InvokeWorkflowFile.Arguments>
+                          <InArgument x:TypeArguments="s:String[]" x:Key="in_ProcessList">[{"chrome"}]</InArgument>
+                        </ui:InvokeWorkflowFile.Arguments>
+                      </ui:InvokeWorkflowFile>
+                    </Sequence>
+                  </If.Then>
+                  <If.Else>
+                    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_12" Level="Info" Message="[&quot;No invoices available to upload&quot;]" />
+                  </If.Else>
+                </If>
+              </Sequence>
+              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="797,91" sap2010:WorkflowViewState.IdRef="LogMessage_15" Level="Info" Message="[&quot;Closed chrome after uploading invoices&quot;]" />
+              <ui:PathExists DisplayName="Path Exists_MasterFile" Exists="[MasterPathExisted]" sap:VirtualizedContainerService.HintSize="797,89" sap2010:WorkflowViewState.IdRef="PathExists_2" Path="[Environment.CurrentDirectory+&quot;\Data\Input\MasterFile\MasterReport.xlsx&quot;]" PathType="File" />
+              <If Condition="[MasterPathExisted]" DisplayName="If_MasterPathExisted" sap:VirtualizedContainerService.HintSize="797,355" sap2010:WorkflowViewState.IdRef="If_1">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <If.Then>
+                  <Sequence DisplayName="Appending MasterReport" sap:VirtualizedContainerService.HintSize="376,207" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <ui:AppendRange DataTable="[in_Dtstatus]" DisplayName="Append Range" sap:VirtualizedContainerService.HintSize="334,115" sap2010:WorkflowViewState.IdRef="AppendRange_1" SheetName="Sheet1" WorkbookPath="[Environment.CurrentDirectory+&quot;\Data\Input\MasterFile\MasterReport.xlsx&quot;]" />
+                  </Sequence>
+                </If.Then>
+                <If.Else>
+                  <Sequence DisplayName="Copying StatusFile to MasterFolder" sap:VirtualizedContainerService.HintSize="242,176" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Master Folder" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[Environment.CurrentDirectory+&quot;\Data\Input\MasterFile&quot;]" />
+                    <ui:CopyFile ContinueOnError="{x:Null}" Destination="[Environment.CurrentDirectory+&quot;\Data\Input\MasterFile\MasterReport.xlsx&quot;]" DisplayName="Copy Status File" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="CopyFile_1" Overwrite="False" Path="[Environment.CurrentDirectory+&quot;\Data\StatusFile\&quot;+in_StatusFileName]" />
+                  </Sequence>
+                </If.Else>
+              </If>
+              <Assign DisplayName="Assign_MasterFileUpload" sap:VirtualizedContainerService.HintSize="797,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[MasterFileUpload]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[Environment.CurrentDirectory+"\Data\Input\MasterFile\MasterReport.xlsx"]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="797,91" sap2010:WorkflowViewState.IdRef="LogMessage_14" Level="Info" Message="[&quot;MasterReport uploading to sharepoint has started&quot;]" />
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke SharePoint Master Upload workflow" sap:VirtualizedContainerService.HintSize="797,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_18" UnSafe="False" WorkflowFileName="SharepointCode\SharePointUpload.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="x:String" x:Key="FolderUrl">[in_config("SharepointMasterUpload").ToString]</InArgument>
+                  <InOutArgument x:TypeArguments="ui:Browser" x:Key="Browser" />
+                  <InArgument x:TypeArguments="s:String[]" x:Key="FileList">[{MasterFileUpload}]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="CredentialAssetName" />
+                  <InArgument x:TypeArguments="ui:BrowserName" x:Key="BrowserToUse">[BrowserName.Chrome]</InArgument>
+                  <InArgument x:TypeArguments="x:Int32" x:Key="UploadTimeout">30000</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="LoginUsername">[in_config("SharePointCredential").ToString]</InArgument>
+                  <InArgument x:TypeArguments="ss:SecureString" x:Key="LoginPassword">[in_passwords("SharePointCredential")]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="LoginMailId">[in_config("SharePointCredential").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="GESSO">[in_config("BoxCredential").ToString]</InArgument>
+                  <InArgument x:TypeArguments="ss:SecureString" x:Key="GEPassword">[in_passwords("BoxCredential")]</InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="797,91" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Master file succesfully uploaded to sharepoint&quot;]" />
+              <Assign DisplayName="Assign_totalCount" sap:VirtualizedContainerService.HintSize="797,60" sap2010:WorkflowViewState.IdRef="Assign_7">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Int32">[totalCount]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Int32">[CInt(OkCount)+CInt(SkipCount)]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <If Condition="[in_MissingRecords.Rows.Count&gt;0]" DisplayName="If_MissingRecords.Rows.Count&gt;0" sap:VirtualizedContainerService.HintSize="797,616" sap2010:WorkflowViewState.IdRef="If_2">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <If.Then>
+                  <Sequence DisplayName="SendingMailwithMissedRecords" sap:VirtualizedContainerService.HintSize="376,468" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                    <Sequence.Variables>
+                      <Variable x:TypeArguments="x:String" Name="MissedRecordPath" />
+                    </Sequence.Variables>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <Assign DisplayName="Assign_MissedRecordPath" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[MissedRecordPath]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[Environment.CurrentDirectory+"\Data\Input\MissedRecords"+DateTime.Now.ToString("dd-MMM-yyyy")+".xlsx"]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <ui:SendExchangeMail Bcc="{x:Null}" Domain="{x:Null}" EmailAutodiscover="{x:Null}" From="{x:Null}" MailMessage="{x:Null}" Name="{x:Null}" TimeoutMS="{x:Null}" Body="[&quot;Hi Team,&lt;br&gt;&lt;br&gt;&lt;b&gt;AP Invoice Printer - Output Results &lt;/b&gt;&lt;br&gt;BOT Name : BH_SC_19_1&lt;br&gt;RunningDate:&quot;+DateTime.Now.ToString(&quot;dd-MMM-yyyy&quot;)+&#xA;&quot;&lt;br&gt;&lt;br&gt;&lt;b&gt;Results : &lt;/b&gt;&lt;ul&gt;&lt;li&gt;Number of Records Managed:&quot;+totalCount.ToString+&quot;&lt;/li&gt;&lt;li&gt;Number of skipped records:&quot;+SkipCount.ToString+&#xA;&quot;&lt;/li&gt;&lt;li&gt;Number of Ok records:&quot;+OkCount.ToString+&#xA;&quot;&lt;/li&gt;&lt;/ul&gt;&lt;br&gt;&lt;b&gt;Link to be used : &lt;/b&gt;&lt;ul&gt;&lt;li&gt;Link for the master file : &quot;+in_config(&quot;SharepointMasterUpload&quot;).ToString+&quot;&lt;/li&gt;&lt;li&gt;Link for the downloaded invoices : &quot;+in_config(&quot;SharepointInvoiceURL&quot;).ToString+&quot;&lt;/li&gt;&lt;/ul&gt;&lt;b&gt;Other Info :&lt;/b&gt; &lt;br&gt;For more info about this email please contact : &lt;br&gt;&lt;b&gt;BOT Functional admin&lt;/b&gt; : Frederic.lallaizon@bhge.com  &quot;]" Cc="[in_Config(&quot;TechSuppMailID&quot;).ToString]" DisplayName="Send Exchange Mail Message" ExchangeVersion="Exchange2007_SP1" sap:VirtualizedContainerService.HintSize="334,145" sap2010:WorkflowViewState.IdRef="SendExchangeMail_1" IsBodyHtml="True" IsDraft="False" Password="[New System.Net.NetworkCredential(&quot;&quot;, in_Passwords(&quot;MailCredential&quot;)).Password]" SaveCopy="False" Server="[in_Config(&quot;EWSserver&quot;).ToString]" Subject="[&quot;AP InvoicePrinter - OutputResult (&quot;+DateTime.Now.ToString(&quot;ddMMMyyyy&quot;)+&quot;)&quot;]" To="[in_config(&quot;AdminMail&quot;).ToString]" User="[in_Config(&quot;MailCredential&quot;).ToString]">
+                      <ui:SendExchangeMail.Files>
+                        <InArgument x:TypeArguments="x:String">[MissedRecordPath]</InArgument>
+                      </ui:SendExchangeMail.Files>
+                    </ui:SendExchangeMail>
+                    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_10" Level="Info" Message="[&quot;Mail sent to team with missing records report&quot;]" />
+                  </Sequence>
+                </If.Then>
+                <If.Else>
+                  <Sequence sap:VirtualizedContainerService.HintSize="376,368" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <ui:SendExchangeMail Bcc="{x:Null}" Domain="{x:Null}" EmailAutodiscover="{x:Null}" From="{x:Null}" MailMessage="{x:Null}" Name="{x:Null}" TimeoutMS="{x:Null}" Body="[&quot;Hi Team,&lt;br&gt;&lt;br&gt;&lt;b&gt;AP Invoice Printer - Output Results &lt;/b&gt;&lt;br&gt;BOT Name : BH_SC_19_1&lt;br&gt;RunningDate:&quot;+DateTime.Now.ToString(&quot;dd-MMM-yyyy&quot;)+&#xA;&quot;&lt;br&gt;&lt;br&gt;&lt;b&gt;Results : &lt;/b&gt;&lt;ul&gt;&lt;li&gt;Number of Records Managed:&quot;+totalCount.ToString+&quot;&lt;/li&gt;&lt;li&gt;Number of skipped records:&quot;+SkipCount.ToString+&#xA;&quot;&lt;/li&gt;&lt;li&gt;Number of Ok records:&quot;+OkCount.ToString+&#xA;&quot;&lt;/li&gt;&lt;/ul&gt;&lt;br&gt;&lt;b&gt;Link to be used : &lt;/b&gt;&lt;ul&gt;&lt;li&gt;Link for the master file : &quot;+in_config(&quot;SharepointMasterUpload&quot;).ToString+&quot;&lt;/li&gt;&lt;li&gt;Link for the downloaded invoices : &quot;+in_config(&quot;SharepointInvoiceURL&quot;).ToString+&quot;&lt;/li&gt;&lt;/ul&gt;&lt;b&gt;Other Info :&lt;/b&gt; &lt;br&gt;For more info about this email please contact : &lt;br&gt;&lt;b&gt;BOT Functional admin&lt;/b&gt; : Frederic.lallaizon@bhge.com  &quot;]" Cc="[in_Config(&quot;TechSuppMailID&quot;).ToString]" DisplayName="Send Exchange Mail Message" ExchangeVersion="Exchange2007_SP1" sap:VirtualizedContainerService.HintSize="334,145" sap2010:WorkflowViewState.IdRef="SendExchangeMail_2" IsBodyHtml="True" IsDraft="False" Password="[New System.Net.NetworkCredential(&quot;&quot;, in_Passwords(&quot;MailCredential&quot;)).Password]" SaveCopy="False" Server="[in_Config(&quot;EWSserver&quot;).ToString]" Subject="[&quot;AP InvoicePrinter - OutputResult (&quot;+DateTime.Now.ToString(&quot;ddMMMyyyy&quot;)+&quot;)&quot;]" To="[in_config(&quot;AdminMail&quot;).ToString]" User="[in_Config(&quot;MailCredential&quot;).ToString]" />
+                    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_11" Level="Info" Message="[&quot;Mail sent to team. No missing records report found&quot;]" />
+                  </Sequence>
+                </If.Else>
+              </If>
+            </Sequence>
+          </If.Then>
+          <If.Else>
+            <Sequence sap:VirtualizedContainerService.HintSize="376,183" sap2010:WorkflowViewState.IdRef="Sequence_7">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;StatusFile path is not exist&quot;]" />
+            </Sequence>
+          </If.Else>
+        </If>
+      </TryCatch.Try>
+      <TryCatch.Catches>
+        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="1264,21" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ActivityAction x:TypeArguments="s:Exception">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+            </ActivityAction.Argument>
+            <Sequence sap:VirtualizedContainerService.HintSize="480,876" sap2010:WorkflowViewState.IdRef="Sequence_12">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="438,91" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Info" Message="[&quot;Error in Sharepoint&quot;+exception.GetType.ToString+exception.Message]" />
+              <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438,591" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <TryCatch.Try>
+                  <Sequence sap:VirtualizedContainerService.HintSize="376,364" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                    <Sequence.Variables>
+                      <Variable x:TypeArguments="x:String" Name="exceptionFile" />
+                    </Sequence.Variables>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke TakeScreenshot workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Framework\TakeScreenshot.xaml">
+                      <ui:InvokeWorkflowFile.Arguments>
+                        <InArgument x:TypeArguments="x:String" x:Key="in_Folder">[in_config("ExScreenshotsFolderPath").ToString]</InArgument>
+                        <InOutArgument x:TypeArguments="x:String" x:Key="io_FilePath">[exceptionFile]</InOutArgument>
+                      </ui:InvokeWorkflowFile.Arguments>
+                    </ui:InvokeWorkflowFile>
+                    <ui:SendExchangeMail Bcc="{x:Null}" Cc="{x:Null}" Domain="{x:Null}" EmailAutodiscover="{x:Null}" From="{x:Null}" MailMessage="{x:Null}" Name="{x:Null}" TimeoutMS="{x:Null}" Body="[&quot;Hi Team,&lt;br&gt;&lt;br&gt;&lt;b&gt;APInvoicePrinter -Exception :&lt;/b&gt;&quot;+DateTime.Now.ToString(&quot;dd-MMM-yyyy&quot;)+ &quot;&lt;br&gt;There is an exception while running the bot. Please, find the attached screenshot for more details &lt;br&gt;Thanks and Regards,&lt;br&gt; APInvoiceBot&quot;]" DisplayName="Send Exchange Mail Message" ExchangeVersion="Exchange2007_SP1" sap:VirtualizedContainerService.HintSize="334,145" sap2010:WorkflowViewState.IdRef="SendExchangeMail_3" IsBodyHtml="True" IsDraft="False" Password="[New System.Net.NetworkCredential(&quot;&quot;, in_Passwords(&quot;MailCredential&quot;)).Password]" SaveCopy="False" Server="[in_Config(&quot;EWSserver&quot;).ToString]" Subject="[&quot;APInvoicePrinter -ExceptionMail&quot;+DateTime.Now.ToString(&quot;dd-MMM-yyyy&quot;)]" To="[in_Config(&quot;TechSuppMailID&quot;).ToString]" User="[in_Config(&quot;MailCredential&quot;).ToString]">
+                      <ui:SendExchangeMail.Files>
+                        <InArgument x:TypeArguments="x:String">[exceptionFile]</InArgument>
+                      </ui:SendExchangeMail.Files>
+                    </ui:SendExchangeMail>
+                  </Sequence>
+                </TryCatch.Try>
+                <TryCatch.Catches>
+                  <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404,21" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <ActivityAction x:TypeArguments="s:Exception">
+                      <ActivityAction.Argument>
+                        <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                      </ActivityAction.Argument>
+                      <Sequence sap:VirtualizedContainerService.HintSize="376,245" sap2010:WorkflowViewState.IdRef="Sequence_11">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Info" Message="[exception.ToString]" />
+                        <Rethrow sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Rethrow_1" />
+                      </Sequence>
+                    </ActivityAction>
+                  </Catch>
+                </TryCatch.Catches>
+              </TryCatch>
+              <Rethrow sap:VirtualizedContainerService.HintSize="438,22" sap2010:WorkflowViewState.IdRef="Rethrow_2" />
+            </Sequence>
+          </ActivityAction>
+        </Catch>
+      </TryCatch.Catches>
+    </TryCatch>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke KillProcessForCurrentUserWorkflow workflow" sap:VirtualizedContainerService.HintSize="1298,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="KillProcessForCurrentUserWorkflow.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <OutArgument x:TypeArguments="x:Boolean" x:Key="out_IsError" />
+        <OutArgument x:TypeArguments="x:String" x:Key="out_ExceptionMsg" />
+        <OutArgument x:TypeArguments="s:Exception" x:Key="out_Exception" />
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+  </Sequence>
+</Activity>

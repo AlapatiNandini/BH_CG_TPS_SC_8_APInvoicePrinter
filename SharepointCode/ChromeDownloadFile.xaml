@@ -1,0 +1,246 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="ChromeDownloadFile" this:ChromeDownloadFile.DownloadTimeoutSeconds="30" this:ChromeDownloadFile.in_ChromeDownloadFileName="PO_Acceptance_Query.txt" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:si="clr-namespace:System.IO;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="DownloadTimeoutSeconds" Type="InArgument(x:Int32)" />
+    <x:Property Name="DownloadFileName" Type="InArgument(x:String)" />
+    <x:Property Name="DownloadedFilePath" Type="OutArgument(x:String)" />
+    <x:Property Name="DestinationFolder" Type="InArgument(x:String)" />
+    <x:Property Name="DestinationFileName" Type="InArgument(x:String)" />
+    <x:Property Name="StartTime" Type="InArgument(s:DateTime)" />
+    <x:Property Name="in_ChromeDownloadFileName" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>890,3289.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>ChromeDownloadFile_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.IntelligentOCR</AssemblyReference>
+      <AssemblyReference>UiPath.Word</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="ChromeDownloadFile" sap:VirtualizedContainerService.HintSize="726,3124.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:Int32" Name="maxAttempts" />
+      <Variable x:TypeArguments="x:String" Name="chromeDownloadsFolder" />
+      <Variable x:TypeArguments="x:Int32" Name="fileCount" />
+      <Variable x:TypeArguments="x:Int32" Name="attemptCount" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <Assign sap:VirtualizedContainerService.HintSize="684,62" sap2010:WorkflowViewState.IdRef="Assign_11">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[chromeDownloadsFolder]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads")]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign DisplayName="Set attempt count to timeout x 2" sap:VirtualizedContainerService.HintSize="684,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Int32">[maxAttempts]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Int32">[DownloadTimeoutSeconds * 4]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign DisplayName="Get file count" sap:VirtualizedContainerService.HintSize="684,62" sap2010:WorkflowViewState.IdRef="Assign_6">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Int32">[fileCount]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Int32">[Directory.GetFiles(chromeDownloadsFolder).Count]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <DoWhile DisplayName="Wait for file to appear" sap:VirtualizedContainerService.HintSize="684,1810.66666666667" sap2010:WorkflowViewState.IdRef="DoWhile_1" Condition="[downloadFileName Is Nothing OrElse not File.Exists(Path.Combine(chromeDownloadsFolder, downloadFileName))]">
+      <Sequence sap:VirtualizedContainerService.HintSize="564,1642.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_2">
+        <Sequence.Variables>
+          <Variable x:TypeArguments="ui:GenericValue" Name="fileExists" />
+          <Variable x:TypeArguments="x:Boolean" Name="keepExists" />
+        </Sequence.Variables>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <ui:UiElementExists DisplayName="Element Exists 'push button  Keep'" Exists="[keepExists]" sap:VirtualizedContainerService.HintSize="522,106" sap2010:WorkflowViewState.IdRef="UiElementExists_1">
+          <ui:UiElementExists.Target>
+            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="d249a48421a257b30e14baa02ea9e2ae" Selector="&lt;html app='chrome.exe' title='*' /&gt;&lt;ctrl name='Google Chrome' role='client' /&gt;&lt;ctrl name='This type of file can harm your computer. Do you want to keep*' role='push button' /&gt;&lt;ctrl name='Keep' role='push button' /&gt;" TimeoutMS="200" WaitForReady="INTERACTIVE" />
+          </ui:UiElementExists.Target>
+        </ui:UiElementExists>
+        <If Condition="[keepExists]" sap:VirtualizedContainerService.HintSize="522,260" sap2010:WorkflowViewState.IdRef="If_4">
+          <If.Then>
+            <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click &quot;Keep&quot;" sap:VirtualizedContainerService.HintSize="334,106" sap2010:WorkflowViewState.IdRef="Click_1" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False" SimulateClick="True">
+              <ui:Click.CursorPosition>
+                <ui:CursorPosition Position="Center">
+                  <ui:CursorPosition.OffsetX>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetX>
+                  <ui:CursorPosition.OffsetY>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetY>
+                </ui:CursorPosition>
+              </ui:Click.CursorPosition>
+              <ui:Click.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="4bf18928b919ac314defe94745c3eb6b" Selector="&lt;html app='chrome.exe' title='*' /&gt;&lt;ctrl name='Google Chrome' role='client' /&gt;&lt;ctrl name='This type of file can harm your computer. Do you want to keep*' role='push button' /&gt;&lt;ctrl name='Keep' role='push button' /&gt;" WaitForReady="INTERACTIVE" />
+              </ui:Click.Target>
+            </ui:Click>
+          </If.Then>
+        </If>
+        <Assign DisplayName="Increment attempt count" sap:VirtualizedContainerService.HintSize="522,62" sap2010:WorkflowViewState.IdRef="Assign_2">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:Int32">[attemptCount]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:Int32">[attemptCount + 1]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <If Condition="[string.IsNullOrEmpty(in_ChromeDownloadFileName)]" sap:VirtualizedContainerService.HintSize="522,748.666666666667" sap2010:WorkflowViewState.IdRef="If_5">
+          <If.Then>
+            <Sequence sap:VirtualizedContainerService.HintSize="376,594.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_4">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="newestFile" />
+                <Variable x:TypeArguments="si:DirectoryInfo" Name="directory" />
+                <Variable x:TypeArguments="si:FileInfo[]" Name="newestFiles" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign DisplayName="Get directory info" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_7">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="si:DirectoryInfo">[directory]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="si:DirectoryInfo">[new DirectoryInfo(chromeDownloadsFolder)]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign DisplayName="Get newest file query" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_8">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="si:FileInfo[]">[newestFiles]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="si:FileInfo[]">[(From f in directory.GetFiles Where f.LastWriteTime &gt; StartTime And Not f.Extension = ".crdownload" Order By f.LastWriteTime Descending Select f).ToArray]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign DisplayName="If new files exist, set newestFile" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_10">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[newestFile]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[If(newestFiles.Count &gt; 0, newestFiles.First.Name, Nothing)]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Newest file: &quot; + If(newestFile, &quot;(None)&quot;)]" />
+              <Assign DisplayName="Set download file name" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_9">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[DownloadFileName]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[newestFile]</InArgument>
+                </Assign.Value>
+              </Assign>
+            </Sequence>
+          </If.Then>
+        </If>
+        <If Condition="[attemptCount &gt; maxAttempts]" DisplayName="Throw if max attempts reached" sap:VirtualizedContainerService.HintSize="522,214" sap2010:WorkflowViewState.IdRef="If_2">
+          <If.Then>
+            <Throw Exception="[new Exception(&quot;Download timeout reached&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
+          </If.Then>
+        </If>
+      </Sequence>
+    </DoWhile>
+    <Assign DisplayName="Set destination file" sap:VirtualizedContainerService.HintSize="684,62" sap2010:WorkflowViewState.IdRef="Assign_5">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[DestinationFileName]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[If(string.IsNullOrWhiteSpace(DestinationFileName), DownloadFileName, DestinationFileName)]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="684,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;DestinationFileName&quot;+DestinationFileName]" />
+    <If Condition="[DestinationFolder IsNot Nothing]" sap:VirtualizedContainerService.HintSize="684,639.333333333333" sap2010:WorkflowViewState.IdRef="If_3">
+      <If.Then>
+        <Sequence sap:VirtualizedContainerService.HintSize="376,485.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_3">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Assign DisplayName="Set downloaded file path" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_3">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[DownloadedFilePath]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">[Path.Combine(DestinationFolder, DestinationFileName)]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[DownloadedFilePath]" />
+          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;source path&quot;+Path.Combine(ChromeDownloadsFolder,DownloadFileName).ToString]" />
+          <ui:MoveFile ContinueOnError="{x:Null}" Destination="[DownloadedFilePath]" DisplayName="Move file to specified folder" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="MoveFile_1" Overwrite="True" Path="[Path.Combine(ChromeDownloadsFolder,DownloadFileName)]" />
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <Assign DisplayName="Set downloaded file path" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_4">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[DownloadedFilePath]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[Path.Combine(ChromeDownloadsFolder,DownloadFileName)]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Else>
+    </If>
+  </Sequence>
+</Activity>
